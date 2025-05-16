@@ -108,8 +108,8 @@ Co-Create solves two core problems:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourteam/CoCreate.git
-cd CoCreate
+git clone https://github.com/RISHASUN001/Synapse_Team-Untitled.git
+cd Synapse_Team-Untitled
 ```
 
 ### 2. Set Up Environment Variables
