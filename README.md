@@ -1,6 +1,6 @@
 
 
-# 🎬 Team\_Untitled – Co-Create: The AI Studio for YouTubers 🚀
+# 🎬 Team\_Untitled – Co-Create: The AI Studio for YouTubers 
 
 🏅 **4th Place Winner** at **Synapse IEEE Winter Hackathon 2024**
 
