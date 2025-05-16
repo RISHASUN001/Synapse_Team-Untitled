@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Option</title>
+    <!-- Google Font for Styling -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Body Styling with Galaxy Theme */
+        body {
+            background: linear-gradient(135deg, #1c1c2b, #3c3c6e, #5f5fa8, #1e1e30);
+            background-attachment: fixed;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        /* App Title */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff8dff, 0 0 20px #e600ff;
+        }
+        /* Paragraph */
+        p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px #888888;
+            margin-bottom: 20px;
+        }
+        /* Option Buttons Container */
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        /* Option Buttons */
+        .option-button {
+            background: linear-gradient(90deg, #ff33ff, #8e2de2);
+            border: none;
+            color: #fff;
+            padding: 40px 80px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px #000000aa;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .option-button:hover {
+            background: linear-gradient(90deg, #ff66ff, #6f1fd2);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px #000000aa, 0 0 10px #ff66ff;
+        }
+        /* Footer for Attribution (optional) */
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Co-Create</h1>
+    <p>Your Ideas, Our Labour</p>
+    <div class="options-container">
+        <a href="http://localhost:5001/end_to_end" class="option-button">End to End Solution</a>
+        <a href="http://localhost:5002" class="option-button">Separated Features</a>
+    </div>
+    <!-- Optional Footer -->
+    <footer>
+        Made with ❤️ by Co-Create Team
+    </footer>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Recommend Background Music</h2>
+    <form id="music-form">
+        <div class="mb-3">
+            <label for="query" class="form-label">Search Query</label>
+            <input type="text" id="query" class="form-control" required maxlength="50">
+            <small id="char-count" class="form-text" style="color: white;">0/50</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <h3>Suggested Music</h3>
+    <div class="output-box">
+        <div id="musicList" class="music-list">No data yet. </div>
+    </div>
+</div>
+
+<script>
+    // Get the input and character count elements
+    const queryInput = document.getElementById('query');
+    const charCount = document.getElementById('char-count');
+
+    // Update the character count as the user types
+    queryInput.addEventListener('input', () => {
+        const currentLength = queryInput.value.length;
+        charCount.textContent = `${currentLength}/50`;
+    });
+    document.getElementById('music-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const query = document.getElementById('query').value;
+
+        // Fetching music data from the server
+        const response = await fetch('/recommend-music', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ query })
+        });
+
+        const data = await response.json();
+        const musicList = document.getElementById('musicList');
+        musicList.innerHTML = ""; // Clear any previous results
+
+        if (data.music_videos && data.music_videos.length > 0) {
+            data.music_videos.forEach(video => {
+                const musicItem = document.createElement('div');
+                musicItem.classList.add('music-item');
+                musicItem.innerHTML = `
+                    <h3>${video.title}</h3>
+                    <p>By: ${video.channel}</p>
+                    <a href="${video.video_link}" target="_blank">Watch Video</a>
+                `;
+                musicList.appendChild(musicItem);
+            });
+        } else {
+            musicList.innerHTML = `<p>No music suggestions available.</p>`;
+        }
+    });
+</script>
+{% endblock %}

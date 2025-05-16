@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <h2>Generate YouTube Video Script</h2>
+    <form id="script-form">
+        <label for="videoIdea" >Video Idea</label>
+        <input type="text" id="videoIdea" required>
+        <label for="product" class="form-label">Product</label>
+        <input type="text" id="product" required>
+        <button type="submit" >Generate Script</button>
+    </form>
+    <h3>Generated Script</h3>
+        <div class="output-box" id="script-result">No data yet.</div>
+</div>
+<script>
+    document.getElementById('script-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const videoIdea = document.getElementById('videoIdea').value;
+    const product = document.getElementById('product').value;
+
+    try {
+        const response = await fetch('/generate-script', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ videoIdea, product })
+        });
+
+        const data = await response.json();
+
+        // Check if response contains a script or an error
+        const scriptOutput = data.script ? formatScript(data.script) : data.error;
+
+        // Display formatted script or error
+        document.getElementById('script-result').innerHTML = scriptOutput;
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('script-result').innerHTML = "An error occurred while generating the script.";
+    }
+});
+
+// Helper function to format script with line breaks and bold settings
+function formatScript(script) {
+    return script
+        .replace(/\[([^\]]+)\]/g, "<strong>[$1]</strong>") // Make settings bold
+        .replace(/\n/g, "<br>"); // Replace newlines with <br>
+}
+
+</script>
+{% endblock %}

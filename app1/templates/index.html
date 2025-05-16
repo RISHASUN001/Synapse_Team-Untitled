@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Creator App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Reset */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1b1f3b, #4a3f78);
+            color: #fff;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        /* App Title */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff8dff, 0 0 20px #e600ff;
+        }
+
+        /* Tagline */
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            color: #e0e0e0;
+            text-shadow: 0 0 5px #888888;
+        }
+
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Card Styles */
+        form{
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 8px #7a4cc3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        form:hover,
+        .output:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 15px #8c61d6;
+        }
+
+        label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #b8a3f3;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #5e5b9b;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        output {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #5e5b9b;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #ff33ff, #8e2de2);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px #000000aa;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #ff66ff, #6f1fd2);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px #000000aa, 0 0 10px #ff66ff;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #888888;
+        }
+
+        .output-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 8px #7a4cc3;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .output-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 15px #8c61d6;
+        }
+
+        .output-box .content {
+            font-size: 1rem;
+            color: #d1cdd6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+            flex-wrap: wrap;
+        }
+
+        .content img {
+            width: 200px;
+            height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        .content img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6), 0 0 10px #8c61d6;
+        }
+
+        /* Music List Container */
+        .music-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* Spacing between items */
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 700px;
+            /* Set max width for the list */
+            background-color: #2d2d5b;
+            /* Light dark background */
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            /* Shadow for depth */
+        }
+
+        /* Music List Container */
+        .music-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            /* Spacing between items */
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 700px;
+            /* Set max width for the list */
+            background-color: #2d2d5b;
+            /* Light dark background */
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            /* Shadow for depth */
+        }
+
+        /* Individual Music Item */
+        .music-item {
+            display: flex;
+            flex-direction: column;
+            background: rgba(136, 159, 244, 0.6);
+            /* White background for contrast */
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .music-item:hover {
+            transform: translateY(-5px);
+            /* Lift up on hover */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Music Item Title */
+        .music-item h3 {
+            margin: 0 0 8px;
+            font-size: 1.2rem;
+            color: #f2f5fc;
+            /* Dark blue-gray for title */
+            font-weight: 600;
+        }
+
+        /* Channel and Link */
+        .music-item p {
+            margin: 0 0 10px;
+            color: #ffffff;
+            /* Lighter gray for channel text */
+            font-size: 0.95rem;
+        }
+
+        .music-item a {
+            text-decoration: underline;
+            color: #d1cdd6;
+            /* Stylish purple for links */
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .music-item a:hover {
+            color: #5b3d99;
+            /* Darker purple on hover */
+        }
+
+        /* Responsive Media Query */
+        @media (max-width: 768px) {
+            .music-list {
+                padding: 10px;
+                margin: 10px;
+            }
+
+            .music-item {
+                padding: 10px;
+            }
+        }
+
+
+        /* Thumbnail container */
+        .thumbnail-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* Center the thumbnails */
+            gap: 10px;
+            /* Space between boxes */
+            margin-top: 20px;
+        }
+
+        .thumbnail-box {
+            width: 200px;
+            /* Fixed width for each thumbnail box */
+            height: 150px;
+            /* Fixed height */
+            background-color: #2d2d5b;
+            /* Box background color */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            /* Box shadow */
+            overflow: hidden;
+            /* Prevent images from overflowing */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-box img {
+            width: 100%;
+            /* Ensure image fits the box */
+            height: 100%;
+            object-fit: cover;
+            /* Cover the box without distortion */
+        }
+
+        .thumbnail-box:hover {
+            transform: scale(1.05);
+            /* Slight zoom effect on hover */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6), 0 0 10px #8c61d6;
+        }
+        /* Container for images and GIFs */
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Styling for individual image elements */
+        .images-container img {
+            max-width: 100%;   /* Ensures the image fits within its container */
+            height: auto;      /* Maintains aspect ratio */
+            max-height: 300px; /* Maximum height for images */
+            width: auto;       /* Maintain aspect ratio */
+            border-radius: 8px; /* Optional: Adds rounded corners to images */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Co-Create</h1>
+        <h2>Your Ideas, Our Labor</h2>
+
+        <!-- Generate Script Section -->
+        <form id="videoForm">
+            <label for="videoIdea">Video Idea:</label>
+            <input type="text" id="videoIdea" name="videoIdea" required>
+
+            <label for="product">Product:</label>
+            <input type="text" id="product" name="product" required>
+
+            <button type="submit">Generate</button>
+        </form>
+
+        <div class="output" id="output">
+            <div class="section">
+                <h3>Generated Script</h3>
+                <div class="output-box" id="scriptOutput">No data yet.</div>
+            </div>
+
+            <div class="section">
+                <h3>Images & GIFs</h3>
+                <div class="output-box">
+                    <div class="images-container" id="imagesOutput">No data yet.</div>
+                </div>
+            </div>
+
+            <div class="output-section" id="musicSection">
+                <h3>Suggested Music</h3>
+                <div class="output-box">
+                    <div class="music-list" id="musicList">No data yet.</div>
+                </div>
+            </div>
+
+            <div class="output-section" id="thumbnailsSection">
+                <h3>Thumbnails</h3>
+                <div class="output-box">
+                    <div class="images-container" id="thumbnailsOutput">No data yet.</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        const backendUrl = 'http://127.0.0.1:5001';
+
+        document.getElementById('videoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const videoIdea = document.getElementById('videoIdea').value;
+            const product = document.getElementById('product').value;
+
+            try {
+                // Fetch script
+                // Fetch script and music suggestions
+                const response = await fetch(`${backendUrl}/generate-script`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoIdea, product })
+                });
+
+                const responseData = await response.json();
+
+                // Helper function to format script with line breaks and bold settings
+                function formatScript(script) {
+                    return script
+                        .replace(/\[([^\]]+)\]/g, "<strong>[$1]</strong>") // Make settings bold
+                        .replace(/\n/g, "<br>"); // Replace newlines with <br>
+                }
+
+                // Display the script
+                const scriptOutput = document.getElementById('scriptOutput');
+                if (responseData.script) {
+                    scriptOutput.innerHTML = formatScript(responseData.script);
+                } else {
+                    scriptOutput.textContent = 'Error generating script.';
+                }
+                
+                // Display the recommended music videos
+                const musicList = document.getElementById('musicList');
+                musicList.innerHTML = "";  // Clear any previous results
+                if (responseData.musicSuggestions && responseData.musicSuggestions.length > 0) {
+                    responseData.musicSuggestions.forEach(music => {
+                        const musicItem = document.createElement('div');
+                        musicItem.classList.add('music-item');
+                        musicItem.innerHTML = `
+                            <h4>${music.title}</h4>
+                            <p>By: ${music.channel}</p>
+                            <a href="${music.video_link}" target="_blank">Watch Video</a>
+                        `;
+                        musicList.appendChild(musicItem);
+                    });
+                } else {
+                    musicList.innerHTML = `<p>No music suggestions available.</p>`;
+                }
+
+
+
+                
+
+                // Fetch images and GIFs
+                const imagesResponse = await fetch(`${backendUrl}/recommend-images`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoIdea: videoIdea }) 
+                });
+                const imagesData = await imagesResponse.json();
+                const imagesOutput = document.getElementById('imagesOutput');
+                imagesOutput.innerHTML = imagesData.map(img => `<img src="${img.url}" alt="Image">`).join('');
+
+                // Fetch thumbnails
+                const thumbnailsResponse = await fetch(`${backendUrl}/trending`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoIdea: videoIdea })
+                });
+                const thumbnailsData = await thumbnailsResponse.json();
+                const thumbnailsOutput = document.getElementById('thumbnailsOutput');
+                thumbnailsOutput.innerHTML = thumbnailsData.thumbnails.map(img => `<img src="${img}" alt="Thumbnail">`).join('');
+
+
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>

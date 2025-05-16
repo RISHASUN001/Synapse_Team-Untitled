@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">View Channel Analytics</h2>
+        
+        <form id="analyticsForm">
+            <div class="form-group">
+                <label for="channelName">Channel Name</label>
+                <input type="text" class="form-control" id="channelName" name="channel_name" placeholder="Enter your channel name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Get Analytics</button>
+        </form>
+
+        <div id="result" class="result alert alert-info" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('analyticsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const channelName = document.getElementById('channelName').value;
+            const password = document.getElementById('password').value;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+            resultDiv.textContent = 'Loading...';
+            resultDiv.style.display = 'block';
+
+            try {
+                const response = await fetch('/view-analytics', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ channel_name: channelName, password: password })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    resultDiv.className = 'result alert alert-success';
+                    resultDiv.innerHTML = `
+                        <h5>Channel Best Upload Time</h5>
+                        <p><strong>Day:</strong> ${data.channel_best_time.day}</p>
+                        <p><strong>Hour:</strong> ${data.channel_best_time.hour}:00</p>
+                        <p><strong>Predicted Views:</strong> ${data.channel_best_time.views}</p>
+                        <p><strong>Predicted Likes:</strong> ${data.channel_best_time.likes}</p>
+                        <hr>
+                        <h5>Global Best Upload Time</h5>
+                        <p><strong>Day:</strong> ${data.global_best_time.day}</p>
+                        <p><strong>Hour:</strong> ${data.global_best_time.hour}:00</p>
+                        <p><strong>Predicted Views:</strong> ${data.global_best_time.views}</p>
+                        <p><strong>Predicted Likes:</strong> ${data.global_best_time.likes}</p>
+                    `;
+                } else {
+                    resultDiv.className = 'result alert alert-danger';
+                    resultDiv.textContent = data.message;
+                }
+            } catch (error) {
+                resultDiv.className = 'result alert alert-danger';
+                resultDiv.textContent = 'An error occurred. Please try again.';
+            }
+        });
+    </script>
+</body>
+
+{% endblock %}

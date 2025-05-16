@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Trending Thumbnails</h2>
+    <form id="trending-form">
+        <div class="mb-3">
+            <label for="topic" class="form-label">Topic</label>
+            <input type="text" id="query" class="form-control" required maxlength="50">
+            <small id="char-count" class="form-text" style="color: white;">0/50</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <h3>Thumbnails</h3>
+    <div id="results" class="output-box">
+        <div class="images-container" id="thumbnailsOutput">No data yet.</div>
+    </div>
+</div>
+<script>
+    // Get the input and character count elements
+    const queryInput = document.getElementById('query');
+    const charCount = document.getElementById('char-count');
+
+    // Update the character count as the user types
+    queryInput.addEventListener('input', () => {
+        const currentLength = queryInput.value.length;
+        charCount.textContent = `${currentLength}/50`;
+    });
+    document.getElementById('trending-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const topic = document.getElementById('topic').value;
+        const response = await fetch('/trending', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic })
+        });
+        const data = await response.json();
+        document.getElementById('results').innerHTML = data.thumbnails.map(url =>
+            `<div><img src="${url}" alt="thumbnail" style="max-width: 100%;"></div>`
+        ).join('');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+
+    <!-- Image/Video Transition Form -->
+    <form id="transitionForm" enctype="multipart/form-data">
+        <h2>Transition</h2>
+        <label>Transition Type:</label>
+        <select name="transition" required>
+            <option value="fade">Fade</option>
+            <option value="slide">Slide</option>
+            <option value="blur">Blur</option>
+            <option value="rotate">Rotate</option>
+            <option value="jump_in">Jump-In</option>
+        </select>
+
+        <label>Upload Before File:</label>
+        <input type="file" name="before" accept="image/*,video/*" required>
+
+        <label>Upload After File:</label>
+        <input type="file" name="after" accept="image/*,video/*" required>
+
+        <button type="submit">Generate MP4</button>
+    </form>
+
+    <div id="result" class="output-box">
+        <div class="images-container" id="thumbnailsOutput">No data yet.</div>
+
+    </div>
+</div>
+
+<script>
+    // Handle Transition Form Submission
+    document.getElementById('transitionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        const transitionType = form.get('transition');
+        
+        // Adjust file input based on transition type
+        if (transitionType === 'jump_in') {
+            // Allow only video files for Jump In
+            const beforeFile = form.get('before');
+            const afterFile = form.get('after');
+
+            if (beforeFile.type.startsWith('video/') && afterFile.type.startsWith('video/')) {
+                const response = await fetch('/process_video', { method: 'POST', body: form });
+                const data = await response.json();
+                const resultPath = data.result;
+
+                document.getElementById('result').innerHTML = `
+                    <video controls>
+                        <source src="${resultPath}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            } else {
+                alert('Please upload video files for Jump In transition.');
+            }
+        } else if (transitionType === 'fade' || transitionType === 'slide' || transitionType === 'zoom' || transitionType === 'blur' || transitionType === 'rotate' ) {
+            // Allow only image files for other transitions
+            const beforeFile = form.get('before');
+            const afterFile = form.get('after');
+
+            if (beforeFile.type.startsWith('image/') && afterFile.type.startsWith('image/')) {
+                const response = await fetch('/process', { method: 'POST', body: form });
+                const data = await response.json();
+                const resultPath = data.result;
+
+                document.getElementById('result').innerHTML = `
+                    <video controls>
+                        <source src="${resultPath}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            } else {
+                alert('Please upload image files for Fade, Slide, or Clothing Change transition.');
+            }
+        }
+    });
+
+    // Adjust file input fields based on selected transition type
+    document.querySelector('select[name="transition"]').addEventListener('change', function() {
+        const beforeInput = document.querySelector('input[name="before"]');
+        const afterInput = document.querySelector('input[name="after"]');
+        const transitionType = this.value;
+
+        if (transitionType !== 'jump_in') {
+            beforeInput.accept = "image/*";
+            afterInput.accept = "image/*";
+        } else {
+            beforeInput.accept = "video/*";
+            afterInput.accept = "video/*";
+        }
+    });
+</script>
+{% endblock %}
